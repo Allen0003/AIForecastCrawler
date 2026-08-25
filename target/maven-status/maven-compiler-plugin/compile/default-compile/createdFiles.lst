@@ -1,0 +1,14 @@
+org/example/model/WeatherResponse$Clouds.class
+org/example/exception/ApiAuthException.class
+org/example/Main.class
+org/example/exception/NetworkException.class
+org/example/model/WeatherResponse.class
+org/example/model/WeatherResponse$Main.class
+org/example/model/WeatherResponse$Sys.class
+org/example/exception/CityNotFoundException.class
+org/example/client/WeatherApiClient.class
+org/example/exception/WeatherParseException.class
+org/example/model/WeatherResponse$Wind.class
+org/example/model/WeatherResponse$WeatherCondition.class
+org/example/service/WeatherService.class
+org/example/exception/WeatherException.class

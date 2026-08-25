@@ -1,0 +1,9 @@
+/Users/allenwu/Desktop/interview/side project/AIForecastCrawler/src/main/java/org/example/service/WeatherService.java
+/Users/allenwu/Desktop/interview/side project/AIForecastCrawler/src/main/java/org/example/exception/CityNotFoundException.java
+/Users/allenwu/Desktop/interview/side project/AIForecastCrawler/src/main/java/org/example/Main.java
+/Users/allenwu/Desktop/interview/side project/AIForecastCrawler/src/main/java/org/example/exception/ApiAuthException.java
+/Users/allenwu/Desktop/interview/side project/AIForecastCrawler/src/main/java/org/example/exception/NetworkException.java
+/Users/allenwu/Desktop/interview/side project/AIForecastCrawler/src/main/java/org/example/model/WeatherResponse.java
+/Users/allenwu/Desktop/interview/side project/AIForecastCrawler/src/main/java/org/example/exception/WeatherException.java
+/Users/allenwu/Desktop/interview/side project/AIForecastCrawler/src/main/java/org/example/exception/WeatherParseException.java
+/Users/allenwu/Desktop/interview/side project/AIForecastCrawler/src/main/java/org/example/client/WeatherApiClient.java

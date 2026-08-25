@@ -1,0 +1,15 @@
+
+
+這是一個全新的 Java 17 / Maven 專案 (AIForecastCrawler)。
+請幫我用 Java 撰寫一個天氣查詢與爬蟲/API串接工具，並著重於「強大的錯誤處理機制 (Error Handling)」與「架構設計」。
+
+需求如下：
+1. 請幫我設計一個 WeatherService 或對應的類別，透過 HTTP Client (例如 OkHttp, RestTemplate 或 Java 17 標準的 HttpClient) 呼叫公開的天氣 API。
+2. 必須實作完善的例外與錯誤處理（Exception Handling），包含：
+   - 網路連線逾時（Timeout）
+   - 城市名稱不存在或輸入錯誤（HTTP 404 / 400）
+   - API 金鑰無效或頻率超限（HTTP 401 / 429）
+   - JSON 回傳格式解析錯誤或欄位缺失
+3. 採用 SLF4J / Logback 將錯誤日誌（Error Logs）與抓取過程紀錄下來。
+4. 在 src/main/java/org/example/底下建立適當的類別結構（例如 Main 類別作為 CLI 進入點，讓使用者可以輸入城市名稱查詢天氣）。
+5. 請告訴我需要在 pom.xml 裡面補上哪些相依性（Dependencies，例如 Jackson 處理 JSON）。
