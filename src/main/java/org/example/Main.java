@@ -2,7 +2,10 @@ package org.example;
 
 import org.example.client.WeatherApiClient;
 import org.example.exception.*;
+import org.example.model.WeatherInfo;
 import org.example.service.WeatherService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
 
@@ -17,27 +20,23 @@ import java.util.Scanner;
  *
  * Architecture overview:
  *   Main  →  WeatherService  →  WeatherApiClient  →  OpenWeatherMap API
- *
- * Error handling strategy:
- *   Each layer translates low-level failures into typed WeatherExceptions.
- *   Main catches them all and prints a user-friendly message to the console.
  */
 public class Main {
 
-    /** Environment variable name for the API key — never hard-code secrets in source. */
-//    private static final String API_KEY_ENV = "f0a53348281f84e59f13d70ca385f4c4";
+    private static final Logger log = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
-        // ── Resolve API key (env-var → CLI arg fallback) ──────────────────────
-        String apiKey = "f0a53348281f84e59f13d70ca385f4c4";
+        // ── Resolve API key ───────────────────────────────────────────────────
+        String apiKey = System.getenv("OPENWEATHER_API_KEY");
         if ((apiKey == null || apiKey.isBlank()) && args.length > 0) {
             apiKey = args[0];
         }
 
         if (apiKey == null || apiKey.isBlank()) {
             System.err.println("[錯誤] 找不到 API 金鑰。");
-//            System.err.println("  請設定環境變數: export " + API_KEY_ENV + "=<your_key>");
+            System.err.println("  請設定環境變數: export OPENWEATHER_API_KEY=<your_key>");
             System.err.println("  或以第一個參數傳入:  java -jar app.jar <your_key>");
+            log.error("Application startup failed: OPENWEATHER_API_KEY is not set");
             System.exit(1);
         }
 
@@ -58,6 +57,7 @@ public class Main {
 
             if (city.equalsIgnoreCase("exit") || city.equalsIgnoreCase("quit")) {
                 System.out.println("掰掰！");
+                log.info("User exited the application");
                 break;
             }
 
@@ -67,29 +67,35 @@ public class Main {
             }
 
             try {
-                String report = service.getFormattedWeather(city);
-                System.out.println(report);
+                WeatherInfo info = service.getWeather(city);
+                System.out.println(info);
 
             // ── Typed error handlers (most specific → most general) ───────────
 
             } catch (CityNotFoundException e) {
+                log.warn("City not found: {}", city);
                 System.out.println("[錯誤] 找不到城市：「" + city + "」");
                 System.out.println("  提示：請確認拼寫，例如 Taipei、London、Tokyo。");
 
-            } catch (ApiAuthException e) {
+            } catch (UnauthorizedApiKeyException e) {
+                log.error("API key unauthorized: {}", e.getMessage());
                 System.out.println("[錯誤] " + e.getMessage());
 
-            } catch (NetworkException e) {
+            } catch (ApiTimeoutException e) {
+                log.error("Network timeout for city='{}': {}", city, e.getMessage());
                 System.out.println("[錯誤] 網路連線失敗，請確認網路狀態後重試。");
                 System.out.println("  詳細原因：" + e.getMessage());
 
-            } catch (WeatherParseException e) {
+            } catch (DataParseException e) {
+                log.error("Failed to parse weather data for city='{}': {}", city, e.getMessage());
                 System.out.println("[錯誤] 天氣資料解析失敗，API 回傳格式可能已變更。");
 
             } catch (IllegalArgumentException e) {
+                log.warn("Invalid input: {}", e.getMessage());
                 System.out.println("[錯誤] 輸入有誤：" + e.getMessage());
 
-            } catch (WeatherException e) {
+            } catch (WeatherApiException e) {
+                log.error("Unexpected weather API error for city='{}': {}", city, e.getMessage(), e);
                 System.out.println("[錯誤] 查詢失敗：" + e.getMessage());
             }
         }

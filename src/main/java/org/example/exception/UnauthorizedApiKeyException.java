@@ -4,11 +4,11 @@ package org.example.exception;
  * Thrown when the API key is missing, invalid (HTTP 401),
  * or the request rate limit has been exceeded (HTTP 429).
  */
-public class ApiAuthException extends WeatherException {
+public class UnauthorizedApiKeyException extends WeatherApiException {
 
     private final int httpStatus;
 
-    public ApiAuthException(int httpStatus) {
+    public UnauthorizedApiKeyException(int httpStatus) {
         super(buildMessage(httpStatus));
         this.httpStatus = httpStatus;
     }

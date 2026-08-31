@@ -4,7 +4,7 @@ package org.example.exception;
  * Thrown when the requested city does not exist or the name is misspelled.
  * Maps to HTTP 400 / 404 from the weather API.
  */
-public class CityNotFoundException extends WeatherException {
+public class CityNotFoundException extends WeatherApiException {
 
     private final String cityName;
 
